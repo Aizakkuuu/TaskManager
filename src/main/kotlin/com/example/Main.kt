@@ -1,10 +1,14 @@
 package com.example
 
-import TaskManager
+import com.example.services.UpdateTaskService
+import com.example.services.TaskService
+
+val filePath = "src/main/resources/tasks.json"
+val updateTaskService = UpdateTaskService(filePath)
+val taskService = TaskService(updateTaskService)
+var isRunning = true
 
 fun main() {
-    val taskManager = TaskManager("src/main/resources/tasks.json")
-    var isRunning = true
 
     while (isRunning) {
         println("\nTask Manager")
@@ -17,34 +21,57 @@ fun main() {
 
         when (readLine()?.toIntOrNull()) {
             1 -> {
+                print("")
                 print("Enter task name: ")
                 val taskName = readLine().orEmpty()
-                taskManager.addTask(taskName)
+                taskService.addTask(taskName)
+                println("Task added successfully.")
             }
             2 -> {
+                print("")
+                listTasks()
                 print("Enter task ID to remove: ")
                 val taskId = readLine()?.toIntOrNull()
-                if (taskId != null) {
-                    taskManager.removeTask(taskId)
+                if (taskId != null && taskService.removeTask(taskId)) {
+                    println("Task removed successfully.")
                 } else {
-                    println("Invalid task ID.")
+                    println("Task not found.")
                 }
             }
-            3 -> taskManager.listTasks()
+            3 -> {
+                println("")
+                listTasks()
+            }
             4 -> {
+                print("")
+                listTasks()
                 print("Enter task ID to complete: ")
                 val taskId = readLine()?.toIntOrNull()
-                if (taskId != null) {
-                    taskManager.completeTask(taskId)
+                if (taskId != null && taskService.completeTask(taskId)) {
+                    println("Task marked as completed.")
                 } else {
-                    println("Invalid task ID.")
+                    println("Task not found.")
                 }
             }
             5 -> {
+                print("")
                 println("Exiting...")
                 isRunning = false
             }
             else -> println("Invalid option. Please try again.")
+        }
+    }
+}
+
+//list the tasks stored
+fun listTasks(){
+    val tasks = taskService.listTasks()
+    if (tasks.isEmpty()) {
+        println("No tasks to display.")
+    } else {
+        tasks.forEach { task ->
+            val status = if (task.isCompleted) "Completed" else "Pending"
+            println("[${task.id}] ${task.name} - $status")
         }
     }
 }
