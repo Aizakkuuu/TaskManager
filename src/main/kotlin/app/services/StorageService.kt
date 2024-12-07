@@ -8,16 +8,16 @@ import java.io.File
 class StorageService(
     private val fileName: String = "tasks.json"
 ) {
-    private val storageDir = File(
-        StorageService::class.java.classLoader.getResource("")?.path
-            ?: (System.getProperty("user.dir") + "/src/main/resources")
-    )
-
-    private val filePath = File(storageDir, fileName).absolutePath
+    private val resourcesDir = File(System.getProperty("user.dir"), "src/main/resources")
+    private val filePath = File(resourcesDir, fileName).absolutePath
 
     private val json = Json {
         prettyPrint = true
         ignoreUnknownKeys = true
+    }
+
+    init {
+        resourcesDir.mkdirs()
     }
 
     fun saveTasks(tasks: List<Task>) {
