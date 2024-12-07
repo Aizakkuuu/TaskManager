@@ -1,6 +1,15 @@
 plugins {
     kotlin("jvm") version "2.0.10"
     kotlin("plugin.serialization") version "1.9.21"
+    application
+}
+
+application {
+    mainClass.set("app.MainKt")
+}
+
+kotlin {
+    jvmToolchain(21)
 }
 
 group = "org.example"
@@ -17,6 +26,30 @@ dependencies {
     testImplementation("io.mockk:mockk:1.13.8")
 }
 
+tasks.withType<Jar> {
+    manifest {
+        attributes(
+            "Main-Class" to "app.MainKt"
+        )
+    }
+}
+
+tasks.register<Jar>("fatJar") {
+    archiveBaseName.set("task-manager")
+    from(sourceSets.main.get().output)
+    dependsOn(configurations.runtimeClasspath)
+
+    manifest {
+        attributes["Main-Class"] = "app.MainKt"
+    }
+}
+
+tasks.build {
+    dependsOn(tasks.test)
+}
+
 tasks.test {
     useJUnitPlatform()
 }
+
+
