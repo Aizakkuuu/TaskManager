@@ -1,0 +1,5 @@
+# Task Manager Resources Directory
+
+This directory stores persistent task data and other resource files for the Task Manager application.
+
+- `tasks.json`: Stores the list of tasks
