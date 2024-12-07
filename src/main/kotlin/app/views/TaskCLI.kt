@@ -29,7 +29,6 @@ class TaskCLI(private val taskService: TaskService) {
 
     private fun createTask() {
         println("\n")
-        listTasks()
         print("Enter task title: ")
         val title = readLine() ?: return
 
@@ -58,7 +57,6 @@ class TaskCLI(private val taskService: TaskService) {
 
     private fun completeTask() {
         println("\n")
-        listTasks()
         print("Enter task ID to mark as complete: ")
         val id = readLine()?.toIntOrNull() ?: return
 
@@ -72,7 +70,6 @@ class TaskCLI(private val taskService: TaskService) {
 
     private fun deleteTask() {
         println("\n")
-        listTasks()
         print("Enter task ID to delete: ")
         val id = readLine()?.toIntOrNull() ?: return
 
