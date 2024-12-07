@@ -1,12 +1,15 @@
 package app.views
-
 import app.services.TaskService
-
+import java.util.Scanner
 class TaskCLI(private val taskService: TaskService) {
+    private val scanner = Scanner(System.`in`)
     fun start() {
         while (true) {
             printMenu()
-            when (readLine()?.trim()) {
+//            val choice = readLine()?.trim()
+            val choice = scanner.nextLine().trim()
+            println("Debug: User input: '$choice'" )
+            when (choice) {
                 "1" -> createTask()
                 "2" -> listTasks()
                 "3" -> completeTask()
@@ -25,6 +28,7 @@ class TaskCLI(private val taskService: TaskService) {
         println("4. Delete Task")
         println("5. Exit")
         print("Choose an option: ")
+        System.out.flush()
     }
 
     private fun createTask() {
