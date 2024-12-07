@@ -8,6 +8,10 @@ import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+/**
+ * This test is for the StorageService class, this ensures that every function is working correctly
+ */
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StorageServiceTest {
 
