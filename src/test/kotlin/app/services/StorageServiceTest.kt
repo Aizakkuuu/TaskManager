@@ -5,6 +5,7 @@ import app.services.StorageService
 import kotlinx.serialization.Serializable
 import org.junit.jupiter.api.*
 import java.io.File
+import java.nio.file.Paths
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -21,18 +22,24 @@ class StorageServiceTest {
         Task(id = 1, title = "Task 1", description = "First task", isCompleted = false),
         Task(id = 2, title = "Task 2", description = "Second task", isCompleted = true)
     )
+    // Use src/test/resources directory
+    private val testResourcesDir = Paths.get("src", "test", "resources").toFile()
 
     @BeforeEach
     fun setup() {
-        storageService = StorageService(testFileName)
+        // Ensure the test resources directory exists
+        testResourcesDir.mkdirs()
+
+        storageService = StorageService(testFileName, testResourcesDir)
+
         // Ensure the test file is clean before each test
-        File(testFileName).delete()
+        File(testResourcesDir, testFileName).delete()
     }
 
     @AfterEach
     fun cleanup() {
         // Clean up after each test
-        File(testFileName).delete()
+        File(testResourcesDir, testFileName).delete()
     }
 
     @Test
